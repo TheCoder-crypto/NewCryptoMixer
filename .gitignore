@@ -1,0 +1,12 @@
+# Ignore node modules for backend
+/backend/node_modules/
+
+# Ignore node modules for mixer_main (if it’s also node-based)
+mixer_main/node_modules/
+
+# Ignore build/artifacts for Hardhat
+mixer_main/artifacts/
+mixer_main/cache/
+
+# Environment files
+*.env
