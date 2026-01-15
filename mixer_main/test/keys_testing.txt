@@ -1,0 +1,34 @@
+
+key number 1:
+
+0xb01Ce4a4CFE35def3F463C7a77dDf875A2289938
+0x6ff29d7780ea58ba32079f2458d94ff7b8764f1089c9b0d455f85f3d883fcf31
+
+
+key number 2:
+
+0x63D0e02127d5086b0607A32B2Aa7b895b4B9d58C
+0x79cbf30751dec2d0aef0433ead9ef29e687f9cf02c17b4c686cf33897f5fdba5
+
+
+key number 3:
+
+0x4ca1c0045b4F402fFE3c1A2D2F399A76e9c7507E
+0x803503a12788d965a41b005489527a65257e0d112b933ccc16c600f998085e76
+
+
+
+
+
+
+
+
+now typescript code we are going to use for our case:
+
+
+1)every single hash of a customer has a root associated with it;
+   the root is stored on the chain
+   but the hashes are stored inside an array off chain
+
+import { Field, Poseidon } from 'o1js' ;
+
