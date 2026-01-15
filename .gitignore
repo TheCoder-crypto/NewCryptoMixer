@@ -1,6 +1,12 @@
 # Ignore node modules for backend
 /backend/node_modules/
 
+/mixer_main/node_modules/
+
+/mixer_main/artifacts/
+
+/mixer_main/cache/
 
 
 # Ignore node modules for mixer_main (if it’s also node-based)
+.env
