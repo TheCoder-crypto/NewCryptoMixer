@@ -4,8 +4,3 @@
 
 
 # Ignore node modules for mixer_main (if it’s also node-based)
-
-
-
-# Environment files
-*.env
