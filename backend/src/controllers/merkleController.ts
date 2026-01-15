@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { prepareMerkleRootForCircom } from '../zk_circuit/zkcircuit2.js';
 import { generateRandomSiblings } from "../services/newSiblings.js";
-import { PrismaClient } from "../generated/prisma/client.js";
+import {  PrismaClient } from "../generated/prisma/client.ts";
+
 
 // Simple test route
 export const JustHelloTest = async (req: Request, res: Response) => {
@@ -36,7 +37,8 @@ export const getLeaf = async (req: Request, res: Response) => {
     siblings.push(leafBigInt);
 
     // Initialize Prisma (consider reusing client in production)
-    const prisma = new PrismaClient();
+    const prisma = new PrismaClient({});
+
 
     // Compute Merkle root
     const root = prepareMerkleRootForCircom(siblings);
