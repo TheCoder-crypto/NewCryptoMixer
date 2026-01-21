@@ -3,6 +3,9 @@ import { prepareMerkleRootForCircom } from "../zk_circuit/zkcircuit2.ts";
 import { generateRandomSiblings } from "../services/newSiblings.ts";
 import { PrismaClient } from "../generated/prisma/client.ts";
 import { import_adapter } from "../PrismaClient.ts";
+import { adding_family } from "../services/creating_family.ts"
+
+
 
 // Simple test route
 export const JustHelloTest = async (req: Request, res: Response) => {
@@ -23,7 +26,8 @@ export const getLeaf = async (req: Request, res: Response) => {
 
     const siblings: bigint[] = generateRandomSiblings();
     const leaf_BigInt = BigInt(leaf_string);
-    siblings.push(leaf_BigInt);
+    siblings.unshift(leaf_BigInt);
+    adding_family(siblings);
 
     const root = prepareMerkleRootForCircom(siblings);
     console.log("Computed Merkle Root:", root);
