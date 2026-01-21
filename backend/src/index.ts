@@ -6,8 +6,7 @@ import session from "express-session";
 const app = express();
 
 
-/*
-app.use( ////
+app.use( 
   session({
     name: "session_id",           // cookie name
     secret: "supersecretvalue",   // used to sign the session ID cookie
@@ -21,7 +20,7 @@ app.use( ////
     }
   })
 );
-*/
+
 
 app.use(express.json());
 app.use("/", router);

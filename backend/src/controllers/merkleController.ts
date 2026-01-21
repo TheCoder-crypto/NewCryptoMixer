@@ -12,67 +12,29 @@ export const JustHelloTest = async (req: Request, res: Response) => {
 // Route to get a leaf (debug version)
 export const getLeaf = async (req: Request, res: Response) => {
   try {
-    const  leaf  = req.body.leaf; // JSON request body
+    const leaf_string  = req.body.leaf; // JSON request body
 
-    if (leaf === undefined || leaf === null) {
+    if (leaf_string === undefined || leaf_string === null) {
       return res.status(400).json({
         success: false,
         message: "Missing required field: leaf",
       });
     }
 
-    // Convert leaf to bigint
-   /* let leafBigInt: string;
-    try {
-      leafBigInt = leaf;
-    } catch {
-      return res.status(400).json({
-        success: false,
-        message: "Leaf must be a valid integer string",
-      });
-    }
-  */    
-
-    // Debug response (no siblings / root)
-    return res.status(200).json({
-      success: true,
-      leafReceived: leaf,
-    });
-
-
-  } catch (error: any) {
-    return res.status(500).json({
-      success: false,
-      message: 'something went wrong but',
-    });
-  }
-};
-
-
-    // Generate random siblings and include the actual leaf
-    
-    /*
     const siblings: bigint[] = generateRandomSiblings();
-    siblings.push(leafBigInt);
+    const leaf_BigInt = BigInt(leaf_string);
+    siblings.push(leaf_BigInt);
 
-    // Initialize Prisma (consider reusing client in production)
-    ///const adapter = import_adapter();
-    ///const prisma = new PrismaClient({adapter});
-
-    // Compute Merkle root
     const root = prepareMerkleRootForCircom(siblings);
     console.log("Computed Merkle Root:", root);
 
-    */
-
-
-
-    /*
+  
+  
     res.status(200).json({
       success: true,
-      leafReceived: leaf,
+      ///leafReceived: leaf_string,
       siblingsCount: siblings.length,
-      root
+      root_message: root.root.toString()
     });
 
   } catch (error: any) {
@@ -83,4 +45,4 @@ export const getLeaf = async (req: Request, res: Response) => {
   }
 }; 
 
-*/
+
