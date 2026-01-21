@@ -1,10 +1,6 @@
 import { keccak256  } from "ethers";
 
-/**
- * Simple hash function for Merkle tree.
- * You can use keccak256 or Poseidon if you have a JS implementation.
- * Here we hash BigInt leaves by converting to 32-byte hex.
- */
+
 function hashPair(a: bigint, b: bigint): bigint {     ///// a funciton hashPait takes as input 2 big(integer but much bigger in size)n returns a biginteger as well
   const buffer = Buffer.concat([                               //////// creates a buffer by concatenating the 2 bigints after converting them to 32-byte hex representation
     Buffer.from(a.toString(16).padStart(64, "0"), "hex"),
