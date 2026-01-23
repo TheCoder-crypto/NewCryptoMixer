@@ -21,9 +21,9 @@ export const getLeaf = async (req: Request, res: Response) => {
       return res.status(400).json({
         success: false,
         message: "Missing required field: leaf",
-      });
+      });                                                           
     }
-
+                                                                     
     const siblings: bigint[] = generateRandomSiblings();
     const leaf_BigInt = BigInt(leaf_string);
     siblings.unshift(leaf_BigInt);

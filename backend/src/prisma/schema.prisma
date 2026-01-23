@@ -18,13 +18,12 @@ datasource db {
 
 
 model Family {
-  leaf      BigInt @id @default(autoincrement())
-
-  sibling1  BigInt
-  sibling2  BigInt
-  sibling3  BigInt
-  sibling4  BigInt
-  sibling5  BigInt
-  sibling6  BigInt
-  sibling7  BigInt
+  leaf      String @id @default(uuid())
+  sibling1  String
+  sibling2  String
+  sibling3  String
+  sibling4  String
+  sibling5  String
+  sibling6  String
+  sibling7  String
 }

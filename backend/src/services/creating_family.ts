@@ -17,14 +17,14 @@ export async function adding_family(arr: bigint[]): Promise<void> {
 
             await prisma.family.create({
                 data: {
-                    leaf: leaf,
-                    sibling1: sibling1,
-                    sibling2: sibling2,
-                    sibling3: sibling3,
-                    sibling4: sibling4,
-                    sibling5: sibling5,
-                    sibling6: sibling6,
-                    sibling7: sibling7
+                    leaf: leaf.toString(),
+                    sibling1: sibling1.toString(),
+                    sibling2: sibling2.toString(),
+                    sibling3: sibling3.toString(),
+                    sibling4: sibling4.toString(),
+                    sibling5: sibling5.toString(),
+                    sibling6: sibling6.toString(),
+                    sibling7: sibling7.toString()
                 },
             });
         }
