@@ -4,11 +4,25 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./Ownable.sol";
 
+
+
+
+interface IVerifier {   //// verifier function that will be fetched from blockchain
+    function verifyProof(
+        uint[2] calldata _pA, 
+        uint[2][2] calldata _pB, 
+        uint[2] calldata _pC, 
+        uint[1] calldata _pubSignals) 
+        external view returns (bool);                
+
+}
+
+
 contract LogicMain is New_Ownership, ReentrancyGuard {
 
-    uint256 private earning_admin;
+    uint256 private earning_admin;   
 
-    address public immutable AdminApprovedWallet;
+    address public immutable AdminApprovedWallet;  
     address public immutable AdminEarner;
 
     uint256 private constant AMOUNT_0_5_ETH = 0.5 ether;
@@ -29,7 +43,7 @@ contract LogicMain is New_Ownership, ReentrancyGuard {
         bytes32 indexed merkleRoot,
         uint256 amount
     );
-
+                                             
     constructor(
         address main_owner,
         address adminwallet,
