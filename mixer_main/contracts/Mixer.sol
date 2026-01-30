@@ -4,19 +4,14 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "./Ownable.sol";
 
-
-
-
 interface IVerifier {   //// verifier function that will be fetched from blockchain
     function verifyProof(
         uint[2] calldata _pA, 
         uint[2][2] calldata _pB, 
         uint[2] calldata _pC, 
-        uint[1] calldata _pubSignals) 
-        external view returns (bool);                
-
+        uint[1] calldata _pubSignals
+    ) external view returns (bool);                
 }
-
 
 contract LogicMain is New_Ownership, ReentrancyGuard {
 
@@ -33,6 +28,8 @@ contract LogicMain is New_Ownership, ReentrancyGuard {
     mapping(bytes32 => uint256) private rootToAmount; 
     mapping(bytes32 => bool) private nullifiers;
 
+    IVerifier public immutable verifier;   // Verifier contract
+
     event DepositQueued(
         address indexed depositor,
         uint256 amount,
@@ -47,10 +44,12 @@ contract LogicMain is New_Ownership, ReentrancyGuard {
     constructor(
         address main_owner,
         address adminwallet,
-        address adminearner
+        address adminearner,
+        address verifierAddress   // <--- add verifier address
     ) New_Ownership(main_owner) {
         AdminApprovedWallet = adminwallet;
         AdminEarner = adminearner;
+        verifier = IVerifier(verifierAddress);   // set verifier
     }
 
     function add_new_merkle(
@@ -78,21 +77,21 @@ contract LogicMain is New_Ownership, ReentrancyGuard {
     }
 
     function deposit() external payable {
-    require(
-        msg.value == AMOUNT_0_5_ETH ||
-        msg.value == AMOUNT_1_ETH   ||
-        msg.value == AMOUNT_5_ETH   ||
-        msg.value == AMOUNT_10_ETH,
-        "Invalid denomination"
-    );
+        require(
+            msg.value == AMOUNT_0_5_ETH ||
+            msg.value == AMOUNT_1_ETH   ||
+            msg.value == AMOUNT_5_ETH   ||
+            msg.value == AMOUNT_10_ETH,
+            "Invalid denomination"
+        );
 
-    owner_percentage(msg.value);
+        owner_percentage(msg.value);
 
-    uint256 totalShare = (msg.value * 2) / 100;
-    earning_admin += (msg.value - totalShare);
+        uint256 totalShare = (msg.value * 2) / 100;
+        earning_admin += (msg.value - totalShare);
 
-    emit DepositQueued(msg.sender, msg.value, block.timestamp);
-     }
+        emit DepositQueued(msg.sender, msg.value, block.timestamp);
+    }
 
     function _verify(
         bytes32 merkleRoot,
@@ -108,10 +107,22 @@ contract LogicMain is New_Ownership, ReentrancyGuard {
     function withdraw(
         bytes32 merkleRoot,
         bytes32 nullifierHash,
-        address payable recipient
+        address payable recipient,
+        uint[2] calldata _pA,
+        uint[2][2] calldata _pB,
+        uint[2] calldata _pC,
+        uint[1] calldata _pubSignals
     ) external onlyOwner nonReentrant {
+        
+        // Step 1: Verify zk-SNARK proof first
+        bool proofValid = verifier.verifyProof(_pA, _pB, _pC, _pubSignals);  /// checks thee proof result from verifier.sol
+        require(proofValid, "Verifier proof failed"); ////// 
+
+        // Step 2: Continue with existing nullifier/root checks
         (bool ok, uint256 amount) = _verify(merkleRoot, nullifierHash);
         require(ok, "Verification failed");
+
+        // Step 3: Transfer ETH
         (bool sent, ) = recipient.call{value: amount}("");
         require(sent, "ETH transfer failed");
     }
