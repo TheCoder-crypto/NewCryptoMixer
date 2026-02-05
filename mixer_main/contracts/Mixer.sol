@@ -28,7 +28,7 @@ contract LogicMain is New_Ownership, ReentrancyGuard {
     mapping(bytes32 => uint256) private rootToAmount; 
     mapping(bytes32 => bool) private nullifiers;
 
-    IVerifier public immutable verifier;   // Verifier contract
+    address public immutable verifier = 0xf8e81D47203A594245E36C48e151709F0C19fBe8;
 
     event DepositQueued(
         address indexed depositor,
@@ -39,17 +39,17 @@ contract LogicMain is New_Ownership, ReentrancyGuard {
     event MerkleRootAdded(
         bytes32 indexed merkleRoot,
         uint256 amount
-    );
+    );   //// verifier_c = verifier;  
                                              
-    constructor(
+    constructor( 
         address main_owner,
         address adminwallet,
-        address adminearner,
-        address verifierAddress   // <--- add verifier address
+        address adminearner
+       
     ) New_Ownership(main_owner) {
         AdminApprovedWallet = adminwallet;
         AdminEarner = adminearner;
-        verifier = IVerifier(verifierAddress);   // set verifier
+
     }
 
     function add_new_merkle(
@@ -115,7 +115,7 @@ contract LogicMain is New_Ownership, ReentrancyGuard {
     ) external onlyOwner nonReentrant {
         
         // Step 1: Verify zk-SNARK proof first
-        bool proofValid = verifier.verifyProof(_pA, _pB, _pC, _pubSignals);  /// checks thee proof result from verifier.sol
+        bool proofValid = IVerifier(verifier).verifyProof(_pA, _pB, _pC, _pubSignals);  /// checks thee proof result from verifier.sol   ////verifier
         require(proofValid, "Verifier proof failed"); ////// 
 
         // Step 2: Continue with existing nullifier/root checks
