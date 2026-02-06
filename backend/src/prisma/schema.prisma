@@ -11,6 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  schemas = ["family", "nullifiers"]
   
 
 }
@@ -26,4 +27,14 @@ model Family {
   sibling5  String
   sibling6  String
   sibling7  String
+
+  @@schema("family")
+}
+
+
+model Nullifiers {
+  null_hash  String @id @default(uuid())
+
+
+  @@schema("nullifiers")
 }
